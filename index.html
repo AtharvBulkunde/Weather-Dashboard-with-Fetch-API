@@ -3,80 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Weather Dashboard</title>
+  <meta name="theme-color" content="#10161c" />
+  <meta name="description" content="A cinematic live weather dashboard with current conditions and a five-day forecast." />
+  <title>WeatherWise — Live Weather</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>🌤️ Live Weather Dashboard</h1>
-      <form id="search-form" autocomplete="off">
-        <input
-          type="text"
-          id="city-input"
-          placeholder="Search any city (e.g. Mumbai)"
-          aria-label="City name"
-        />
-        <button type="submit">Search</button>
-      </form>
-      <p id="error-msg" class="error" role="alert"></p>
-    </header>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
 
-    <!-- Default cities: Nashik & Pune -->
-    <section class="default-cities">
-      <div class="city-card" id="card-nashik">
-        <h2>Nashik</h2>
-        <p class="country muted">Maharashtra, India</p>
-        <div class="city-body">
-          <img class="icon" src="" alt="weather icon" />
-          <div>
-            <p class="temp">--°C</p>
-            <p class="desc muted">--</p>
-            <p class="extra muted small">--</p>
-          </div>
+  <main class="weather-app">
+    <aside class="sidebar glass-panel">
+      <a class="brand" href="#" aria-label="WeatherWise home">
+        <span class="brand-mark">W<span>·</span></span>
+        <span>Weather<span class="brand-light">Wise</span></span>
+      </a>
+
+      <div class="sidebar-section">
+        <div class="section-label"><span>WEATHER INSIGHT</span><span class="live-dot"></span></div>
+        <div class="insight-card">
+          <div class="insight-top"><span class="insight-icon">◌</span><span id="insight-label">Live conditions</span></div>
+          <div class="insight-gauge"><div class="gauge-track"></div><div class="gauge-arc"></div><span class="gauge-point"></span></div>
+          <div class="insight-bottom"><span id="insight-value">Ready to explore</span><span class="insight-arrow">↗</span></div>
         </div>
-        <div class="mini-forecast"></div>
+        <p class="sidebar-note">Real-time conditions, wherever life takes you.</p>
       </div>
 
-      <div class="city-card" id="card-pune">
-        <h2>Pune</h2>
-        <p class="country muted">Maharashtra, India</p>
-        <div class="city-body">
-          <img class="icon" src="" alt="weather icon" />
-          <div>
-            <p class="temp">--°C</p>
-            <p class="desc muted">--</p>
-            <p class="extra muted small">--</p>
-          </div>
-        </div>
-        <div class="mini-forecast"></div>
+      <div class="sidebar-section places-section">
+        <div class="section-label"><span>QUICK LOCATIONS</span><span class="tiny-count">02</span></div>
+        <button class="place-link active" data-city="Nashik"><span class="place-pin">⌖</span><span><strong>Nashik</strong><small>Maharashtra, India</small></span><span class="place-arrow">↗</span></button>
+        <button class="place-link" data-city="Pune"><span class="place-pin">⌖</span><span><strong>Pune</strong><small>Maharashtra, India</small></span><span class="place-arrow">↗</span></button>
       </div>
+
+      <div class="sidebar-bottom">
+        <div class="mini-orb" aria-hidden="true"><span>☁</span><i></i><b></b></div>
+        <p class="sidebar-foot-title">Weather, made clearer.</p>
+        <p class="sidebar-foot-copy">A calmer view of the world outside.</p>
+        <div class="api-pill"><span></span> POWERED BY OPEN-METEO</div>
+      </div>
+    </aside>
+
+    <section class="main-content">
+      <header class="topbar">
+        <div class="location-line"><span class="location-icon">⌖</span><div><p id="top-location">Nashik, Maharashtra, India</p><span id="current-date">Your local forecast</span></div></div>
+        <div class="top-actions">
+          <form id="search-form" class="search-box" autocomplete="off">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input id="city-input" type="text" placeholder="Search any city..." aria-label="Search any city" />
+            <button type="submit" aria-label="Search city">↵</button>
+          </form>
+          <button id="unit-toggle" class="unit-toggle" type="button" aria-label="Switch temperature unit">°C <span>/</span> °F</button>
+        </div>
+      </header>
+      <p id="error-msg" class="error" role="alert" aria-live="polite"></p>
+
+      <section class="hero">
+        <div class="hero-backdrop" aria-hidden="true"></div>
+        <div class="hero-content">
+          <div class="eyebrow"><span class="live-dot"></span> LIVE WEATHER <span class="eyebrow-divider">/</span> <span id="hero-country">INDIA</span></div>
+          <div class="hero-main">
+            <div class="hero-temperature"><span id="current-temp">--</span><span class="degree">°</span></div>
+            <div class="hero-condition"><div id="weather-symbol" class="weather-symbol" aria-hidden="true">☁</div><h1 id="city-name">Nashik</h1><p id="current-desc">Loading conditions...</p></div>
+          </div>
+          <p class="hero-summary" id="hero-summary">A fresh look at the sky above you.</p>
+          <div class="hero-range"><span>H <strong id="today-high">--°</strong></span><span>L <strong id="today-low">--°</strong></span></div>
+        </div>
+        <div class="hero-stamp"><span class="stamp-sun">✳</span><span><b id="hero-feels">LIVE</b><small>OUTSIDE RIGHT NOW</small></span></div>
+      </section>
+
+      <section class="metrics-grid" aria-label="Current weather details">
+        <article class="metric-card glass-card"><div class="metric-head"><span>Humidity</span><span class="metric-icon">◌</span></div><div class="metric-value"><strong id="humidity-value">--</strong><span>%</span></div><div class="metric-track"><span id="humidity-bar"></span></div><p id="humidity-note">Relative humidity</p></article>
+        <article class="metric-card glass-card"><div class="metric-head"><span>Wind speed</span><span class="metric-icon">〰</span></div><div class="metric-value"><strong id="wind-value">--</strong><span>km/h</span></div><div class="wind-visual"><span>CALM</span><div class="wind-line"></div><span>WINDY</span></div><p id="wind-note">Current wind conditions</p></article>
+        <article class="metric-card glass-card"><div class="metric-head"><span>Conditions</span><span class="metric-icon">✧</span></div><div class="metric-value condition-value"><strong id="condition-value">—</strong></div><div class="condition-caption"><span class="condition-dot"></span><span id="condition-note">Updated with live data</span></div><p>Based on current observations</p></article>
+      </section>
+
+      <section class="forecast-section">
+        <div class="section-heading"><div><p class="eyebrow dark-eyebrow">PLAN AHEAD</p><h2>Next 5 days</h2></div><span class="forecast-caption">DAILY OUTLOOK <span>↗</span></span></div>
+        <div id="forecast-grid" class="forecast-grid" aria-live="polite">
+          <div class="forecast-skeleton"></div><div class="forecast-skeleton"></div><div class="forecast-skeleton"></div><div class="forecast-skeleton"></div><div class="forecast-skeleton"></div>
+        </div>
+      </section>
+
+      <section class="city-strip-section">
+        <div class="section-heading compact-heading"><div><p class="eyebrow dark-eyebrow">AROUND YOUR REGION</p><h2>Nearby snapshots</h2></div><span class="tiny-live"><i></i> LIVE</span></div>
+        <div class="city-strip">
+          <article class="city-snapshot" id="card-nashik"><div class="snapshot-top"><div><h3>Nashik</h3><p>Maharashtra, India</p></div><span class="snapshot-icon">☀</span></div><div class="snapshot-bottom"><strong class="temp">--°</strong><span class="desc">Loading</span></div><div class="mini-forecast"></div></article>
+          <article class="city-snapshot" id="card-pune"><div class="snapshot-top"><div><h3>Pune</h3><p>Maharashtra, India</p></div><span class="snapshot-icon">☁</span></div><div class="snapshot-bottom"><strong class="temp">--°</strong><span class="desc">Loading</span></div><div class="mini-forecast"></div></article>
+        </div>
+      </section>
+
+      <footer class="footer"><span>© 2026 WEATHERWISE</span><span>MADE FOR THE FORECAST AHEAD <span class="footer-spark">✳</span></span></footer>
+      <div id="loader" class="loading-status hidden" role="status"><span class="spinner"></span> Finding your forecast…</div>
     </section>
-
-    <!-- Search result (hidden until user searches) -->
-    <main id="dashboard" class="hidden">
-      <section id="current" class="card current">
-        <h2 id="city-name">—</h2>
-        <p id="country" class="muted"></p>
-        <div class="current-body">
-          <img id="current-icon" src="" alt="weather icon" />
-          <div>
-            <p id="current-temp" class="temp">--°C</p>
-            <p id="current-desc" class="muted">--</p>
-            <p id="current-extra" class="muted small"></p>
-          </div>
-        </div>
-      </section>
-
-      <section id="forecast" class="forecast">
-        <h3>5-Day Forecast</h3>
-        <div id="forecast-grid" class="forecast-grid"></div>
-      </section>
-    </main>
-
-    <div id="loader" class="loader hidden">Loading…</div>
-  </div>
-
+  </main>
   <script src="app.js"></script>
 </body>
 </html>
